@@ -1,0 +1,30 @@
+{
+    "name": "broadcast",
+    "version": "1.0.0",
+    "description": "provide broadcast service through telegram bots",
+    "main": "broadcast.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/junior-upgi/broadcast.git"
+    },
+    "author": "Chia-Yu Tsai",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "*",
+        "cors": "*",
+        "cron": "*",
+        "ejs": "*",
+        "express": "*",
+        "jsonwebtoken": "*",
+        "ldapjs": "*",
+        "moment-timezone": "*",
+        "morgan": "*",
+        "mssql": "*"
+    },
+    "devDependencies": {
+        "eslint": "*"
+    }
+}
