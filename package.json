@@ -13,16 +13,15 @@
     "author": "Chia-Yu Tsai",
     "license": "ISC",
     "dependencies": {
-        "body-parser": "*",
-        "cors": "*",
-        "cron": "*",
-        "ejs": "*",
-        "express": "*",
-        "jsonwebtoken": "*",
-        "ldapjs": "*",
-        "moment-timezone": "*",
-        "morgan": "*",
-        "mssql": "*"
+        "body-parser": "^1.15.2",
+        "cors": "^2.8.1",
+        "cron": "^1.1.1",
+        "ejs": "^2.5.2",
+        "express": "^4.14.0",
+        "moment-timezone": "^0.5.9",
+        "morgan": "^1.7.0",
+        "mssql": "^3.3.0",
+        "request": "^2.79.0"
     },
     "devDependencies": {
         "eslint": "*"

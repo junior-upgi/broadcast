@@ -1,8 +1,8 @@
-//var serverHost = "http://localhost"; // development
-var serverHost = "http://192.168.168.25"; // production
+var serverHost = "http://localhost"; // development
+//var serverHost = "http://192.168.168.25"; // production
 var serverPort = process.env.PORT || 9001;
-var mssqlServerHost = "http://upgi.ddns.net"; // access database from the internet (development)
-//var mssqlServerHost = "http://192.168.168.5"; // access database from LAN (production)
+//var mssqlServerHost = "http://upgi.ddns.net"; // access database from the internet (development)
+var mssqlServerHost = "http://192.168.168.5"; // access database from LAN (production)
 var upgiSystemAccount = "upgiSystem";
 var upgiSystemPassword = "upgiSystem";
 
@@ -12,13 +12,13 @@ var mssqlConfig = {
     password: upgiSystemPassword
 };
 
+const workingLocale = "Asia/Taipei";
+
 const botAPIUrl = "https://api.telegram.org/bot";
 
-const broadcastFrequency = "* * * * * *";
-
-const modelUpdateFreqency = "0 */5 * * * *";
-
-const workingLocale = "Asia/Taipei";
+var broadcastActiveStatus = true; // switch broadcast system on/off
+var broadcastFrequency = "*/30 * * * * *"; // how often broadcast action is triggered
+var broadcastQuantity = 5; // how many message to broadcast each time
 
 module.exports = {
     serverHost,
@@ -27,7 +27,8 @@ module.exports = {
     upgiSystemPassword,
     mssqlConfig,
     botAPIUrl,
+    broadcastActiveStatus,
     broadcastFrequency,
-    modelUpdateFreqency,
+    broadcastQuantity,
     workingLocale
 };

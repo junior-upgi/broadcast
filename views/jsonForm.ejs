@@ -10,11 +10,26 @@
 </head>
 
 <body>
-    <input id="targetChatID" type="text" placeholder="收訊ID" /><br>
-    <textarea id="message" placeholder="訊息內容"></textarea><br>
-    <input id="botID" type="text" placeholder="推播機器人" /><br>
-    <button id="submitButton" type="button"></button>
-    <button id="resetButton" type="button"></button>
+    <form action="<%= serverHost%>:<%= serverPort %>/broadcast" method="post" enctype="application/x-www-form-urlencoded">
+        <select id="targetID" name="targetID" size="20" required>
+            <option disabled></option>
+            <% chatList.forEach(function(chat){ %>
+                <option value="<%= chat.id %>"><%= chat.title %></option>
+            <% }); %>
+            <% userList.forEach(function(user){ %>
+                <option value="<%= user.id %>"><%= user.NAME %></option>
+            <% }); %>
+        </select>
+        <textarea id="message" name="message" placeholder="訊息內容" rows="10" cols="40" required></textarea>
+        <select id="token" name="token" size="7" required>
+            <option disabled></option>
+            <% botList.forEach(function(bot){ %>
+                <option value="<%= bot.token %>"><%= bot.first_name %></option>
+            <% }); %>
+        </select><br>
+        <input id="submit" type="submit" value="推播" />
+        <input id="reset" type="reset" value="重設" />
+    </form>
 </body>
 
 </html>
