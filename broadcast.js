@@ -103,5 +103,5 @@ var broadcastingSchedule = new CronJob(config.broadcastFrequency, function() { /
         }
         messageQueue = messageQueue.slice(numberOfMessageToBroadcast);
     }
-}, null, true, config.workingLocale);
+}, null, true, config.workingTimezone);
 broadcastingSchedule.start();

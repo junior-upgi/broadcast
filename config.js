@@ -12,7 +12,7 @@ var mssqlConfig = {
     password: upgiSystemPassword
 };
 
-const workingLocale = "Asia/Taipei";
+const workingTimezone = "Asia/Taipei";
 
 const botAPIUrl = "https://api.telegram.org/bot";
 
@@ -30,5 +30,5 @@ module.exports = {
     broadcastActiveStatus,
     broadcastFrequency,
     broadcastQuantity,
-    workingLocale
+    workingTimezone
 };
