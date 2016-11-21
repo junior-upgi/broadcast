@@ -1,5 +1,4 @@
-var serverHost = "http://localhost"; // development
-//var serverHost = "http://192.168.168.25"; // production
+var serverHost = "http://localhost";
 var serverPort = process.env.PORT || 9001;
 //var mssqlServerHost = "http://upgi.ddns.net"; // access database from the internet (development)
 var mssqlServerHost = "http://192.168.168.5"; // access database from LAN (production)
