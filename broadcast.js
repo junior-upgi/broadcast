@@ -59,12 +59,16 @@ app.route("/broadcast") // routes related to broadcasting message passed in thro
             });
     })
     .post(function(request, response) { // when data is posted to the page
-        messageQueue.push({ // store a message in the message queue
-            chat_id: request.body.targetID,
-            text: request.body.message,
-            token: request.body.token
-        });
-        return response.status(200).redirect("/broadcast"); // redirect back to messaging page
+        if (request.body.chat_id && request.body.text && request.body.token) {
+            messageQueue.push({ // store a message in the message queue
+                chat_id: request.body.chat_id,
+                text: request.body.text,
+                token: request.body.token
+            });
+            return response.status(200).redirect("/broadcast"); // redirect back to messaging page
+        } else {
+            return response.status(500).redirect("/broadcast"); // redirect back to messaging page
+        }
     });
 
 app.listen(config.serverPort); // start server

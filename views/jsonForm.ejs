@@ -11,7 +11,7 @@
 
 <body>
     <form action="<%= serverHost%>:<%= serverPort %>/broadcast" method="post" enctype="application/x-www-form-urlencoded">
-        <select id="targetID" name="targetID" size="20" required>
+        <select id="chat_id" name="chat_id" size="20" required>
             <option disabled></option>
             <% chatList.forEach(function(chat){ %>
                 <option value="<%= chat.id %>"><%= chat.title %></option>
@@ -20,7 +20,7 @@
                 <option value="<%= user.id %>"><%= user.NAME %></option>
             <% }); %>
         </select>
-        <textarea id="message" name="message" placeholder="訊息內容" rows="10" cols="40" required></textarea>
+        <textarea id="text" name="text" placeholder="訊息內容" rows="10" cols="40" required></textarea>
         <select id="token" name="token" size="7" required>
             <option disabled></option>
             <% botList.forEach(function(bot){ %>
