@@ -80,7 +80,7 @@ var broadcastingSchedule = new CronJob(config.broadcastFrequency, function() { /
     messageQueue.forEach(function(message) {
         console.log("=============================================================");
         console.log("目標：" + message.chat_id);
-        console.log("內容：" + message.text);
+        console.log("內容：\n" + message.text);
         console.log("途徑：" + message.token);
     });
     console.log("=============================================================");
