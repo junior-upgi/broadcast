@@ -101,10 +101,8 @@ var broadcastingSchedule = new CronJob(config.broadcastFrequency, function() { /
                 if (error || (httpResponse.statusCode !== 200)) {
                     mssql.close();
                     console.log("broadcast error: " + error + "\n" + JSON.stringify(body));
-                    return response.status(httpResponse.statusCode).send(error);
                 } else {
                     mssql.close();
-                    return response.status(httpResponse.statusCode).end();
                 }
             });
         }
