@@ -41,7 +41,6 @@ app.route("/broadcast") // routes related to broadcasting message passed in thro
                     }).then(function(resultset) {
                         userList = resultset;
                         mssqlConnection.close(); // close database connection
-                        console.log("Telegram 資料查詢成功");
                         return response.status(200).render("jsonForm", {
                             serverHost: config.serverHost,
                             serverPort: config.serverPort,
@@ -50,12 +49,11 @@ app.route("/broadcast") // routes related to broadcasting message passed in thro
                             userList: userList
                         });
                     }).catch(function(error) {
-                        console.log("Telegram 資料查詢發生錯誤： " + error);
-                        return response.status(500).send("Telegram 資料查詢發生錯誤： " + error);
+                        return response.status(500).send(".dbo.telegram data extraction error: " + error);
                     });
             })
             .catch(function(error) { // connect failure
-                return console.log("資料庫連結發生錯誤： " + error);
+                return console.log("error connecting to database " + error);
             });
     })
     .post(function(request, response) { // when data is posted to the page
@@ -65,23 +63,26 @@ app.route("/broadcast") // routes related to broadcasting message passed in thro
                 text: request.body.text,
                 token: request.body.token
             });
-            return response.status(200).redirect("/broadcast"); // redirect back to messaging page
+            console.log("broadcast");
+            return response.status(200).send('message received and will be broadcasted shortly<br><a href="/broadcast">return to broadcast form</a>');
         } else {
-            return response.status(500).redirect("/broadcast"); // redirect back to messaging page
+            console.log("error");
+            return response.status(500).send('required message component not found<br><a href="/broadcast">return to broadcast form</a>');
         }
     });
 
 app.listen(config.serverPort); // start server
-console.log("推播系統運行中...(" + config.serverHost + ":" + config.serverPort + ")");
+console.log("Telegram broadcast server in operation...(" + config.serverHost + ":" + config.serverPort + ")");
 
 var broadcastingSchedule = new CronJob(config.broadcastFrequency, function() { // periodically broadcast messages stored in message queue
-    console.log("目前時間： " + moment(moment(), "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss"));
-    console.log("訊息列表");
+    console.log("Telegram broadcast server in operation...(" + config.serverHost + ":" + config.serverPort + ")");
+    console.log("current time: " + moment(moment(), "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss"));
+    console.log("message queue");
     messageQueue.forEach(function(message) {
         console.log("=============================================================");
-        console.log("目標：" + message.chat_id);
-        console.log("內容：\n" + message.text);
-        console.log("途徑：" + message.token);
+        console.log("recipient: " + message.chat_id);
+        console.log("message content:\n" + message.text);
+        console.log("bot: " + message.token);
     });
     console.log("=============================================================");
     if ((config.broadcastActiveStatus === true) && (messageQueue.length > 0)) { //if queue has message waiting and system is on
@@ -96,12 +97,14 @@ var broadcastingSchedule = new CronJob(config.broadcastFrequency, function() { /
                     "text": messageQueue[i].text,
                     "parse_mode": "HTML"
                 }
-            }, function(error, response, body) {
-                if (error) {
-                    console.log("推播作業發生錯誤：" + error);
+            }, function(error, httpResponse, body) {
+                if (error || (httpResponse.statusCode !== 200)) {
+                    mssql.close();
+                    console.log("broadcast error: " + error + "\n" + JSON.stringify(body));
+                    return response.status(httpResponse.statusCode).send(error);
                 } else {
-                    console.log("推播作業成功：" + response.statusCode);
-                    console.log("伺服器回覆：" + JSON.stringify(body));
+                    mssql.close();
+                    return response.status(httpResponse.statusCode).end();
                 }
             });
         }
