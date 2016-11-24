@@ -1,29 +1,29 @@
 {
-    "name": "broadcast",
-    "version": "1.0.0",
-    "description": "provide broadcast service through telegram bots",
-    "main": "broadcast.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/junior-upgi/broadcast.git"
-    },
-    "author": "Chia-Yu Tsai",
-    "license": "ISC",
-    "dependencies": {
-        "body-parser": "^1.15.2",
-        "cors": "^2.8.1",
-        "cron": "^1.1.1",
-        "ejs": "^2.5.2",
-        "express": "^4.14.0",
-        "moment-timezone": "^0.5.9",
-        "morgan": "^1.7.0",
-        "mssql": "^3.3.0",
-        "request": "^2.79.0"
-    },
-    "devDependencies": {
-        "eslint": "*"
-    }
+  "name": "broadcast",
+  "version": "1.0.0",
+  "description": "provide broadcast service through telegram bots",
+  "main": "broadcast.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/junior-upgi/broadcast.git"
+  },
+  "author": "Chia-Yu Tsai",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "cron": "^1.1.1",
+    "ejs": "^2.5.2",
+    "express": "^4.14.0",
+    "moment-timezone": "^0.5.9",
+    "morgan": "^1.7.0",
+    "mssql": "^3.3.0",
+    "request": "^2.79.0"
+  },
+  "devDependencies": {
+    "eslint": "*"
+  }
 }

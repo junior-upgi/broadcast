@@ -1,3 +1,4 @@
+var cors = require("cors");
 var express = require("express");
 var bodyParser = require("body-parser");
 var morgan = require("morgan");
@@ -10,6 +11,7 @@ var telegram = require("./model/telegram.js");
 
 var app = express();
 app.set("view engine", "ejs");
+app.use(cors()); // allow cross origin request
 app.use(morgan("dev")); // log request and result to console
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
@@ -17,6 +19,13 @@ app.use(bodyParser.json()); // parse application/json
 var jsonParser = bodyParser.json();
 
 var messageQueue = []; // array to hold message queue
+
+app.get("/status", function(request, response) {
+    return response.status(200).json({
+        status: "online",
+        timestamp: moment(moment(), "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss")
+    });
+});
 
 app.route("/broadcast") // routes related to broadcasting message passed in through JSON
     .get(function(request, response) { // supply user with a broadcast form
