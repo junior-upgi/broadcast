@@ -85,7 +85,7 @@ app.route("/broadcast") // routes related to broadcasting message passed in thro
 app.listen(config.serverPort); // start server
 console.log("Telegram broadcast server in operation...(" + config.serverHost + ":" + config.serverPort + ")");
 
-var broadcastingSchedule = new CronJob(config.broadcastFrequency, function() { // periodically broadcast messages stored in message queue
+var scheduledBroadcasting = new CronJob(config.broadcastFrequency, function() { // periodically broadcast messages stored in message queue
     console.log("Telegram broadcast server in operation...(" + config.serverHost + ":" + config.serverPort + ")");
     console.log("current time: " + moment(moment(), "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss"));
     console.log("message queue");
@@ -96,7 +96,7 @@ var broadcastingSchedule = new CronJob(config.broadcastFrequency, function() { /
         console.log("bot: " + message.token);
     });
     console.log("=============================================================");
-    if ((config.broadcastActiveStatus === true) && (messageQueue.length > 0)) { //if queue has message waiting and system is on
+    if ((config.broadcastActiveStatus === true) && (messageQueue.length > 0)) { // if queue has message waiting and system is on
         var numberOfMessageToBroadcast = (messageQueue.length >= config.broadcastQuantity) ? config.broadcastQuantity : messageQueue.length;
         for (i = 0; i < numberOfMessageToBroadcast; i++) { // loop through from the beginning of the queue
             httpRequest({
@@ -120,4 +120,4 @@ var broadcastingSchedule = new CronJob(config.broadcastFrequency, function() { /
         messageQueue = messageQueue.slice(numberOfMessageToBroadcast);
     }
 }, null, true, config.workingTimezone);
-broadcastingSchedule.start();
+scheduledBroadcasting.start();
