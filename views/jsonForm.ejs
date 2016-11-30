@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <form action="<%= serverHost%>:<%= serverPort %>/broadcast" method="post" enctype="application/x-www-form-urlencoded">
+    <form action="./broadcast" method="post" enctype="application/x-www-form-urlencoded">
         <select id="chat_id" name="chat_id" size="20" required>
             <option disabled></option>
             <% chatList.forEach(function(chat){ %>
