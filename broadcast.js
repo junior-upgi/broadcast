@@ -1,11 +1,13 @@
-var cors = require("cors");
-var express = require("express");
 var bodyParser = require("body-parser");
-var morgan = require("morgan");
-var moment = require("moment-timezone");
+var cors = require("cors");
 var CronJob = require("cron").CronJob;
-var mssql = require("mssql");
+var express = require("express");
 var httpRequest = require("request");
+var moment = require("moment-timezone");
+var morgan = require("morgan");
+var mssql = require("mssql");
+var Q = require("q");
+
 var config = require("./config.js");
 var telegram = require("./model/telegram.js");
 

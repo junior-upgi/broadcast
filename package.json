@@ -21,6 +21,7 @@
     "moment-timezone": "^0.5.9",
     "morgan": "^1.7.0",
     "mssql": "^3.3.0",
+    "q": "^1.4.1",
     "request": "^2.79.0"
   },
   "devDependencies": {
