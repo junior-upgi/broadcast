@@ -77,7 +77,10 @@ app.route("/broadcast") // routes related to broadcasting message passed in thro
             console.log("broadcast");
             return response.status(200).send('message received and will be broadcasted shortly<br><a href="/broadcast">return to broadcast form</a>');
         } else {
-            console.log("error");
+            console.log("required message component not found...");
+            console.log("error(request.body.chat_id): " + request.body.chat_id);
+            console.log("error(request.body.text): " + request.body.text);
+            console.log("error(request.body.token): " + request.body.token);
             return response.status(500).send('required message component not found<br><a href="/broadcast">return to broadcast form</a>');
         }
     });
