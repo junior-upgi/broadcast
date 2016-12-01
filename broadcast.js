@@ -112,9 +112,12 @@ var scheduledBroadcasting = new CronJob(config.broadcastFrequency, function() { 
                     "parse_mode": "HTML"
                 }
             }, function(error, httpResponse, body) {
-                if (error || (httpResponse.statusCode !== 200)) {
+                if (error || (httpResponse.statusCode !== 200) || (body.error_code !== 200)) {
                     mssql.close();
-                    console.log("broadcast error: " + error + "\n" + JSON.stringify(body));
+                    console.log("broadcast error: " + error);
+                    console.log("response body.ok: " + body.ok);
+                    console.log("response body.error_code: " + body.error_code);
+                    console.log("response body.description: " + body.description);
                 } else {
                     mssql.close();
                 }
