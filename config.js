@@ -19,7 +19,7 @@ const botAPIUrl = "https://api.telegram.org/bot";
 
 var broadcastActiveStatus = true; // switch broadcast system on/off
 var broadcastFrequency = "*/5 * * * * *"; // how often broadcast action is triggered
-var broadcastQuantity = 5; // how many message to broadcast each time
+var broadcastQuantity = 30; // how many message to broadcast each time
 
 module.exports = {
     serverHost,
