@@ -6,25 +6,16 @@ const serverPort = 9001;
 const mssqlServerHost = 'http://192.168.168.5'; // access database from LAN (production)
 // const mssqlServerHost = 'http://127.0.0.1'; // access database through SSH (development)
 const mssqlServerPort = 1433;
-var upgiSystemAccount = 'upgiSystem';
-var upgiSystemPassword = 'upgiSystem';
+const upgiSystemAccount = 'upgiSystem';
+const upgiSystemPassword = 'upgiSystem';
 const smtpTransportAccount = 'smtps://junior.upgi@gmail.com:cHApPPZV@smtp.gmail.com';
-const workingTimezone = 'Asia/Taipei';
-
-var mssqlConfig = {
-    server: mssqlServerHost.slice(7),
-    user: upgiSystemAccount,
-    password: upgiSystemPassword,
-    port: mssqlServerPort
-};
-
 const workingTimezone = 'Asia/Taipei';
 
 const botAPIUrl = 'https://api.telegram.org/bot';
 
-var broadcastActiveStatus = true; // switch broadcast system on/off
-var broadcastFrequency = '*/5 * * * * *'; // how often broadcast action is triggered
-var broadcastQuantity = 30; // how many message to broadcast each time
+const broadcastActiveStatus = true; // switch broadcast system on/off
+const broadcastFrequency = '*/5 * * * * *'; // how often broadcast action is triggered
+const broadcastQuantity = 30; // how many message to broadcast each time
 
 module.exports = {
     systemReference: systemReference,

@@ -17,7 +17,7 @@
                 <option value="<%= chat.id %>"><%= chat.title %></option>
             <% }); %>
             <% userList.forEach(function(user){ %>
-                <option value="<%= user.id %>"><%= user.NAME %></option>
+                <option value="<%= user.id %>"><%= user.last_name %><%= user.first_name %></option>
             <% }); %>
         </select>
         <textarea id="text" name="text" placeholder="訊息內容" rows="10" cols="40" required></textarea>

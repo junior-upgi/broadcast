@@ -78,6 +78,7 @@
         "no-console": "off",
         "no-invalid-this": "off",
         "no-undef": "warn",
+        "no-unused-vars": "warn",
         "object-curly-spacing": [
             "error",
             "always", {
