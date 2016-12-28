@@ -61,8 +61,8 @@ app.route('/broadcast') // routes related to broadcasting message passed in thro
             console.log(`error(request.body.chat_id): ${request.body.chat_id}`);
             console.log(`error(request.body.text): ${request.body.text}`);
             console.log(`error(request.body.token): ${request.body.token}\n`);
-            utility.writeSystemLog(currentDatetime, 'POST to /broadcast', 'error', `${currentDatetime} required message component not found`);
-            return response.status(500).send('required message component not found<br><a href="/broadcast">return to broadcast form</a>');
+            response.status(500).send('required message component not found<br><a href="/broadcast">return to broadcast form</a>');
+            return utility.writeSystemLog(currentDatetime, 'POST to /broadcast', 'error', `${currentDatetime} required message component not found`);
         }
     });
 

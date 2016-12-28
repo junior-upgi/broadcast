@@ -10,9 +10,7 @@ const database = require('./database.js');
 const telegramUser = require('../model/telegramUser.js');
 const telegramBot = require('../model/telegramBot.js');
 
-// ///////////////////////////////////////////////////////////
-let statusReport = new CronJob('*/5 * * * * ', function() {
-    // const statusReport = new CronJob('0 */5 * * * * ', function() {
+let statusReport = new CronJob('0 0 */3 * * *', function() {
     let id = uuid().toUpperCase();
     let issuedDatetime = moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
     let systemRef = serverConfig.systemReference;
@@ -39,11 +37,10 @@ let statusReport = new CronJob('*/5 * * * * ', function() {
         return console.log(`${serverConfig.systemReference} statusReport broadcasting failed: ` + error);
     });
 }, null, true, serverConfig.workingTimezone);
-// ///////////////////////////////////////////////////////////
 
 function writeSystemLog(issuedDatetime, functionRef, type, message) {
     let currentDatetime = moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
-    database.executeQuery(`INSERT INTO upgiSystem.dbo.customAppLog (issuedDatetime,systemRef,functionRef,type,message)VALUES('${issuedDatetime}','${serverConfig.systemReference}','${functionRef}','${type}','${message}');`, function(data, error) {
+    database.executeQuery(`INSERT INTO upgiSystem.dbo.customAppLog (issuedDatetime,systemRef,functionRef,type,message) VALUES ('${issuedDatetime}','${serverConfig.systemReference}','${functionRef}','${type}','${message}');`, function(data, error) {
         if (error) {
             console.log(`${currentDatetime} error writing system log`);
         }
