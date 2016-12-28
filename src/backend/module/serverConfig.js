@@ -23,8 +23,8 @@ module.exports = {
     serverHost: serverHost,
     serverPort: serverPort,
     serverUrl: serverHost + ':' + serverPort,
-    // publicServerUrl: 'http://upgi.ddns.net:' + serverPort, // production
-    publicServerUrl: serverHost + ':' + 9999, // development with browserSync
+    publicServerUrl: 'http://upgi.ddns.net:' + serverPort, // production
+    // publicServerUrl: serverHost + ':' + 9999, // development with browserSync
     mssqlServerHost: mssqlServerHost,
     mssqlServerPort: mssqlServerPort,
     mssqlServerUrl: mssqlServerHost + ':' + mssqlServerHost,
