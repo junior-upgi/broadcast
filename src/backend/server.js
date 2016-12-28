@@ -1,37 +1,50 @@
-var bodyParser = require("body-parser");
-var cors = require("cors");
-var CronJob = require("cron").CronJob;
-var express = require("express");
-var httpRequest = require("request");
-var moment = require("moment-timezone");
-var morgan = require("morgan");
-var mssql = require("mssql");
-var Q = require("q");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const CronJob = require("cron").CronJob;
+const express = require("express");
+const httpRequest = require("request-promise");
+const moment = require("moment-timezone");
+const morgan = require("morgan");
+const mssql = require("mssql");
+const Q = require("q");
 
-var config = require("./config.js");
-var telegram = require("./model/telegram.js");
+const serverConfig = require("./module/serverConfig.js");
+const telegram = require("./model/telegram.js");
 
-var app = express();
+const app = express();
 app.set("view engine", "ejs");
 app.use(cors()); // allow cross origin request
 app.use(morgan("dev")); // log request and result to console
-app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
-var urlencodedParser = bodyParser.urlencoded({ extended: true });
+app.use(bodyParser.urlencoded({
+    extended: true
+})); // parse application/x-www-form-urlencoded
+const urlencodedParser = bodyParser.urlencoded({
+    extended: true
+});
 app.use(bodyParser.json()); // parse application/json
-var jsonParser = bodyParser.json();
+const jsonParser = bodyParser.json();
 
-var messageQueue = []; // array to hold message queue
+let messageQueue = []; // array to hold message queue
 
 app.get("/status", function(request, response) {
     return response.status(200).json({
+        system: serverConfig.systemReference,
         status: "online",
         timestamp: moment(moment(), "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss")
     });
 });
 
+app.listen(serverConfig.serverPort, function(error) { // start backend server
+    if (error) {
+        console.log(`error starting ${serverConfig.systemReference} server: ${error}`);
+    } else {
+        console.log(`${serverConfig.systemReference} server in operation... (${serverConfig.serverUrl})`);
+    }
+});
+
 app.route("/broadcast") // routes related to broadcasting message passed in through JSON
     .get(function(request, response) { // supply user with a broadcast form
-        var mssqlConnection = new mssql.Connection(config.mssqlConfig); // init db connection obj
+        var mssqlConnection = new mssql.Connection(serverConfig.mssqlConfig); // init db connection obj
         var mssqlRequest;
         mssqlConnection.connect() // start db connection
             .then(function() { // connect success
@@ -53,8 +66,8 @@ app.route("/broadcast") // routes related to broadcasting message passed in thro
                         userList = resultset;
                         mssqlConnection.close(); // close database connection
                         return response.status(200).render("jsonForm", {
-                            serverHost: config.serverHost,
-                            serverPort: config.serverPort,
+                            serverHost: serverConfig.serverHost,
+                            serverPort: serverConfig.serverPort,
                             botList: botList,
                             chatList: chatList,
                             userList: userList
@@ -85,11 +98,8 @@ app.route("/broadcast") // routes related to broadcasting message passed in thro
         }
     });
 
-app.listen(config.serverPort); // start server
-console.log("Telegram broadcast server in operation...(" + config.serverHost + ":" + config.serverPort + ")");
-
-var scheduledBroadcasting = new CronJob(config.broadcastFrequency, function() { // periodically broadcast messages stored in message queue
-    console.log("Telegram broadcast server in operation...(" + config.serverHost + ":" + config.serverPort + ")");
+var scheduledBroadcasting = new CronJob(serverConfig.broadcastFrequency, function() { // periodically broadcast messages stored in message queue
+    console.log("Telegram broadcast server in operation...(" + serverConfig.serverHost + ":" + serverConfig.serverPort + ")");
     console.log("current time: " + moment(moment(), "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss"));
     console.log("message queue");
     messageQueue.forEach(function(message) {
@@ -99,13 +109,15 @@ var scheduledBroadcasting = new CronJob(config.broadcastFrequency, function() { 
         console.log("bot: " + message.token);
     });
     console.log("=============================================================");
-    if ((config.broadcastActiveStatus === true) && (messageQueue.length > 0)) { // if queue has message waiting and system is on
-        var numberOfMessageToBroadcast = (messageQueue.length >= config.broadcastQuantity) ? config.broadcastQuantity : messageQueue.length;
+    if ((serverConfig.broadcastActiveStatus === true) && (messageQueue.length > 0)) { // if queue has message waiting and system is on
+        var numberOfMessageToBroadcast = (messageQueue.length >= serverConfig.broadcastQuantity) ? serverConfig.broadcastQuantity : messageQueue.length;
         for (i = 0; i < numberOfMessageToBroadcast; i++) { // loop through from the beginning of the queue
             httpRequest({
-                url: config.botAPIUrl + messageQueue[i].token + "/sendMessage",
+                url: serverConfig.botAPIUrl + messageQueue[i].token + "/sendMessage",
                 method: "post",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 json: {
                     "chat_id": messageQueue[i].chat_id,
                     "text": messageQueue[i].text,
@@ -125,5 +137,5 @@ var scheduledBroadcasting = new CronJob(config.broadcastFrequency, function() { 
         }
         messageQueue = messageQueue.slice(numberOfMessageToBroadcast);
     }
-}, null, true, config.workingTimezone);
+}, null, true, serverConfig.workingTimezone);
 scheduledBroadcasting.start();
