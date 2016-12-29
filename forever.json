@@ -5,13 +5,13 @@
     "workingDir": "/home/junior/project_upgilinuxvm1/broadcast/build",
     "watch": true,
     "watchDirectory": "/home/junior/project_upgilinuxvm1/broadcast/src/backend",
-    // "watchIgnore": "",
+    "watchIgnore": "",
     "fifo": true,
     "colors": true,
     "append": true,
     "verbose": true,
-    // "minUptime":,
-    // "spinSleepTime":,
+    "minUptime": 1000,
+    "spinSleepTime": 1000,
     // "args": ["--port", "8081"],
     "killTree": true
 }
