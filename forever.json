@@ -1,0 +1,17 @@
+{
+    // broadcast
+    "script": "server.js",
+    "sourceDir": "/home/junior/project_upgilinuxvm1/broadcast/build",
+    "workingDir": "/home/junior/project_upgilinuxvm1/broadcast/build",
+    "watch": true,
+    "watchDirectory": "/home/junior/project_upgilinuxvm1/broadcast/src/backend",
+    // "watchIgnore": "",
+    "fifo": true,
+    "colors": true,
+    "append": true,
+    "verbose": true,
+    // "minUptime":,
+    // "spinSleepTime":,
+    // "args": ["--port", "8081"],
+    "killTree": true
+}
