@@ -77,7 +77,7 @@ utility.statusReport.start();
 
 // periodically broadcast messages stored in message queue
 let scheduledBroadcasting = new CronJob(serverConfig.broadcastFrequency, function() {
-    utility.logger.info('commence periodic broadcasting protocol');
+    // utility.logger.info('commence periodic broadcasting protocol');
     // if messageQueue has message waiting and system is on for broadcasting
     if ((serverConfig.broadcastActiveStatus === true) && (messageQueue.length > 0)) {
         // determine how many message to send out during this cycle
