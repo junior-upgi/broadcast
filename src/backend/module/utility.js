@@ -2,7 +2,8 @@ const CronJob = require('cron').CronJob;
 const fs = require('fs');
 const moment = require('moment-timezone');
 const httpRequest = require('request-promise');
-const uuid = require('uuid/v4');
+// const uuid = require('uuid/v4');
+const winston = require('winston');
 
 const serverConfig = require('./serverConfig.js');
 
@@ -10,12 +11,33 @@ const database = require('./database.js');
 const telegramUser = require('../model/telegramUser.js');
 const telegramBot = require('../model/telegramBot.js');
 
-let statusReport = new CronJob('0 0 */3 * * *', function() {
-    let id = uuid().toUpperCase();
+// Create the log directory if it does not exist
+if (!fs.existsSync(serverConfig.logDir)) {
+    fs.mkdirSync(serverConfig.logDir);
+}
+const logger = new(winston.Logger)({
+    transports: [
+        // colorize the output to the console
+        new(winston.transports.Console)({
+            timestamp: function() {
+                return moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
+            },
+            colorize: true,
+            level: 'debug'
+        }),
+        new(winston.transports.File)({
+            filename: `${serverConfig.logDir}/results.log`,
+            timestamp: function() {
+                return moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
+            },
+            level: serverConfig.development ? 'debug' : 'info'
+        })
+    ]
+});
+
+let statusReport = new CronJob('00 00,30 00,01,05-23 * * *', function() {
+    logger.info(`${serverConfig.systemReference} reporting mechanism triggered`);
     let issuedDatetime = moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
-    let systemRef = serverConfig.systemReference;
-    let functionRef = 'statusReport';
-    let type = 'maintenance';
     let message = `${issuedDatetime} ${serverConfig.systemReference} server reporting in`;
     httpRequest({
         method: 'post',
@@ -27,14 +49,10 @@ let statusReport = new CronJob('0 0 */3 * * *', function() {
         },
         json: true
     }).then(function(response) {
-        database.executeQuery(`INSERT INTO upgiSystem.dbo.customAppLog (id,issuedDatetime,systemRef,functionRef,type,message)VALUES('${id}','${issuedDatetime}','${systemRef}','${functionRef}','${type}','${message}');`, function(data, error) {
-            if (error) {
-                return console.log(`${serverConfig.systemReference} statusReport logging failed: ` + error);
-            }
-            return console.log(`${serverConfig.systemReference} statusReport @ ${issuedDatetime} completed`);
-        });
+        logger.verbose(`${message}`);
+        return logger.info(`${serverConfig.systemReference} reporting mechanism completed`);
     }).catch(function(error) {
-        return console.log(`${serverConfig.systemReference} statusReport broadcasting failed: ` + error);
+        return logger.error(`${serverConfig.systemReference} reporting mechanism failure ${error}`);
     });
 }, null, true, serverConfig.workingTimezone);
 
@@ -97,6 +115,7 @@ function fileRemoval(completeFilePath, callback) {
 module.exports = {
     alertSystemError: alertSystemError,
     fileRemoval: fileRemoval,
+    logger: logger,
     statusReport: statusReport,
     writeSystemLog: writeSystemLog
 };

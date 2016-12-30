@@ -14,10 +14,13 @@ const workingTimezone = 'Asia/Taipei';
 const botAPIUrl = 'https://api.telegram.org/bot';
 
 const broadcastActiveStatus = true; // switch broadcast system on/off
-const broadcastFrequency = '*/5 * * * * *'; // how often broadcast action is triggered
-const broadcastQuantity = 30; // how many message to broadcast each time
+const broadcastFrequency = '* * * * * *'; // how often broadcast action is triggered
+const broadcastQuantity = 5; // how many message to broadcast each time
+
+const logDir = 'log';
 
 module.exports = {
+    logDir: logDir,
     systemReference: systemReference,
     development: development,
     serverHost: serverHost,
