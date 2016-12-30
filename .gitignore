@@ -4,6 +4,4 @@ build
 public
 debug.log
 npm-debug.log
-error.log
-broadcast.log
-log
+log\**
