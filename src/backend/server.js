@@ -90,7 +90,7 @@ let scheduledBroadcasting = new CronJob(serverConfig.broadcastFrequency, functio
             let currentQueuedMessage = messageQueue[i].text;
             httpRequest({
                 method: 'post',
-                uri: serverConfig.botAPIUrl + messageQueue[i].token + '/sendMessage',
+                uri: `${serverConfig.botAPIUrl}${messageQueue[i].token}/sendMessage`,
                 body: {
                     chat_id: messageQueue[i].chat_id,
                     text: messageQueue[i].text,
@@ -100,7 +100,7 @@ let scheduledBroadcasting = new CronJob(serverConfig.broadcastFrequency, functio
             }).then(function(response) {
                 return utility.logger.verbose(`message ${i + 1}/${messageQueue.length} broadcasted:\n${currentQueuedMessage}`);
             }).catch(function(error) {
-                utility.alertSystemError('scheduledBroadcasting', `${error}`);
+                utility.alertSystemError('scheduledBroadcasting', `uri: ${serverConfig.botAPIUrl}${messageQueue[i].token}/sendMessage\ntarget: ${messageQueue[i].chat_id}\nmessage: ${messageQueue[i].text}\nerror: ${error}`);
                 return utility.logger.error(`message ${i + 1}/${numberOfMessageToBroadcast} broadcasting failure:\n${error}`);
             });
         }
