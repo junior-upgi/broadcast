@@ -275,7 +275,18 @@ function getUserID(userName) {
     return chat_id;
 }
 
+function getUserName(chat_id) {
+    let userName;
+    list.forEach(function(userObject) {
+        if (userObject.id === chat_id) {
+            userName = userObject.last_name + userObject.first_name;
+        }
+    });
+    return userName;
+}
+
 module.exports = {
     getUserID: getUserID,
+    getUserName: getUserName,
     list: list
 };
