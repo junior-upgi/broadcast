@@ -100,7 +100,7 @@ let scheduledBroadcasting = new CronJob(serverConfig.broadcastFrequency, functio
             }).then(function(response) {
                 return utility.logger.verbose(`message ${i + 1}/${messageQueue.length} broadcasted:\n${currentQueuedMessage}`);
             }).catch(function(error) {
-                utility.alertSystemError('scheduledBroadcasting', `uri: ${serverConfig.botAPIUrl}${messageQueue[i].token}/sendMessage\ntargetID: ${messageQueue[i].chat_id}\ntarget: telegramUser.getUserName(${messageQueue[i].chat_id})\nmessage: ${messageQueue[i].text}\nerror: ${error}`);
+                utility.alertSystemError('scheduledBroadcasting', `uri: ${serverConfig.botAPIUrl}${messageQueue[i].token}/sendMessage\ntargetID: ${messageQueue[i].chat_id}\ntarget: ${telegramUser.getUserName(messageQueue[i].chat_id)}\nmessage: ${messageQueue[i].text}\nerror: ${error}`);
                 return utility.logger.error(`message ${i + 1}/${numberOfMessageToBroadcast} broadcasting failure:\n${error}`);
             });
         }
