@@ -77,7 +77,7 @@ utility.statusReport.start();
 
 // periodically broadcast messages stored in message queue
 let scheduledBroadcasting = new CronJob(serverConfig.broadcastFrequency, function() {
-    // utility.logger.info('commence periodic broadcasting protocol');
+    utility.logger.info('commence periodic broadcasting protocol');
     // if messageQueue has message waiting and system is on for broadcasting
     if ((serverConfig.broadcastActiveStatus === true) && (messageQueue.length > 0)) {
         // determine how many message to send out during this cycle
@@ -98,7 +98,7 @@ let scheduledBroadcasting = new CronJob(serverConfig.broadcastFrequency, functio
                 },
                 json: true
             }).then(function(response) {
-                return utility.logger.verbose(`message ${i + 1}/${messageQueue.length} broadcasted:\n${currentQueuedMessage}`);
+                return utility.logger.verbose(`message ${i + 1}/${numberOfMessageToBroadcast} broadcasted:\n${currentQueuedMessage}`);
             }).catch(function(error) {
                 utility.alertSystemError('scheduledBroadcasting', `uri: ${serverConfig.botAPIUrl}${messageQueue[i].token}/sendMessage\ntargetID: ${messageQueue[i].chat_id}\ntarget: ${telegramUser.getUserName(parseInt(messageQueue[i].chat_id))}\nmessage: ${messageQueue[i].text}\nerror: ${error}`);
                 return utility.logger.error(`message ${i + 1}/${numberOfMessageToBroadcast} broadcasting failure:\n${error}`);
