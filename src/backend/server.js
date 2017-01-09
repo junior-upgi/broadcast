@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const CronJob = require('cron').CronJob;
+const cron = require('node-cron');
 const express = require('express');
 const httpRequest = require('request-promise');
 const moment = require('moment-timezone');
@@ -28,6 +28,7 @@ let messageQueue = []; // array to hold message queue
 
 app.get('/status', function(request, response) {
     return response.status(200).json({
+        hostname: serverConfig.serverHostname,
         system: serverConfig.systemReference,
         status: 'online',
         timestamp: moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss')
@@ -76,7 +77,7 @@ app.listen(serverConfig.serverPort, function(error) { // start backend server
 utility.statusReport.start();
 
 // periodically broadcast messages stored in message queue
-let scheduledBroadcasting = new CronJob(serverConfig.broadcastFrequency, function() {
+cron.schedule(serverConfig.broadcastFrequency, function() {
     utility.logger.info('commence periodic broadcasting protocol');
     // if messageQueue has message waiting and system is on for broadcasting
     if ((serverConfig.broadcastActiveStatus === true) && (messageQueue.length > 0)) {
@@ -109,5 +110,4 @@ let scheduledBroadcasting = new CronJob(serverConfig.broadcastFrequency, functio
         utility.logger.verbose(`${messageQueue.length} message(s) left in the queue`);
         utility.logger.info('periodic broadcasting protocol completed');
     }
-}, null, true, serverConfig.workingTimezone);
-scheduledBroadcasting.start();
+}, true);

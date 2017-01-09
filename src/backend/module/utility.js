@@ -1,6 +1,6 @@
-const CronJob = require('cron').CronJob;
 const fs = require('fs');
 const moment = require('moment-timezone');
+const cron = require('node-cron');
 const httpRequest = require('request-promise');
 // const uuid = require('uuid/v4');
 const winston = require('winston');
@@ -35,16 +35,16 @@ const logger = new(winston.Logger)({
     ]
 });
 
-let statusReport = new CronJob('00 00,30 00,01,05-23 * * *', function() {
+let statusReport = cron.schedule('0 0 */2 * * *', function() {
     logger.info(`${serverConfig.systemReference} reporting mechanism triggered`);
     let issuedDatetime = moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
-    let message = `${issuedDatetime} ${serverConfig.systemReference} server reporting in`;
+    let message = `${issuedDatetime} ${serverConfig.systemReference} server reporting in from ${serverConfig.serverHostname}`;
     httpRequest({
         method: 'post',
         uri: serverConfig.botAPIUrl + telegramBot.getToken('upgiITBot') + '/sendMessage',
         body: {
             chat_id: telegramUser.getUserID('蔡佳佑'),
-            text: `${message}`,
+            text: message,
             token: telegramBot.getToken('upgiITBot')
         },
         json: true
@@ -54,7 +54,7 @@ let statusReport = new CronJob('00 00,30 00,01,05-23 * * *', function() {
     }).catch(function(error) {
         return logger.error(`${serverConfig.systemReference} reporting mechanism failure ${error}`);
     });
-}, null, true, serverConfig.workingTimezone);
+}, false);
 
 function writeSystemLog(issuedDatetime, functionRef, type, message) {
     let currentDatetime = moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');

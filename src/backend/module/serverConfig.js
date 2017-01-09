@@ -2,6 +2,7 @@ const systemReference = 'broadcast';
 
 const development = true;
 const serverHost = 'http://127.0.0.1';
+const serverHostname = 'upgilinuxvm1';
 const serverPort = 9001;
 const mssqlServerHost = 'http://192.168.168.5'; // access database from LAN (production)
 // const mssqlServerHost = 'http://127.0.0.1'; // access database through SSH (development)
@@ -24,6 +25,7 @@ module.exports = {
     systemReference: systemReference,
     development: development,
     serverHost: serverHost,
+    serverHostname: serverHostname,
     serverPort: serverPort,
     serverUrl: serverHost + ':' + serverPort,
     publicServerUrl: 'http://upgi.ddns.net:' + serverPort, // production
