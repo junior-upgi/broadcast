@@ -1,7 +1,7 @@
-node_modules
 bower_components
 build
-public
-debug.log
-npm-debug.log
+deprecated
 log
+node_modules
+npm-debug.log
+public

@@ -7,10 +7,11 @@
         "*.html"
     ],
     "excludeFiles": [
-        "node_modules/**",
         "bower_components/**",
-        "public/**",
-        "build/**"
+        "build/**",
+        "deprecated/**",
+        "node_modules/**",
+        "public/**"
     ],
     "maxErrors": 10,
     "disallowSpacesInsideArrayBrackets": false,
@@ -27,6 +28,7 @@
         "try",
         "catch"
     ],
+    "requireDotNotation": false,
     "requireSpaceAfterBinaryOperators": [
         "=",
         ",",

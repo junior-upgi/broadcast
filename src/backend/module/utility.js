@@ -1,13 +1,12 @@
+const cron = require('node-cron');
 const fs = require('fs');
 const moment = require('moment-timezone');
-const cron = require('node-cron');
+const mssql = require('mssql');
 const httpRequest = require('request-promise');
-// const uuid = require('uuid/v4');
 const winston = require('winston');
 
 const serverConfig = require('./serverConfig.js');
 
-const database = require('./database.js');
 const telegramUser = require('../model/telegramUser.js');
 const telegramBot = require('../model/telegramBot.js');
 
@@ -35,7 +34,33 @@ const logger = new(winston.Logger)({
     ]
 });
 
-let statusReport = cron.schedule('0 0 */2 * * *', function() {
+function executeQuery(queryString, callback) {
+    logger.info(`${serverConfig.systemReference} database access function triggered`);
+    logger.info(`query: ${queryString}`);
+    let mssqlConnection = new mssql.Connection(serverConfig.mssqlConfig);
+    mssqlConnection.connect()
+        .then(function() {
+            let mssqlRequest = new mssql.Request(mssqlConnection);
+            mssqlRequest.query(queryString)
+                .then(function(recordset) {
+                    mssqlConnection.close();
+                    logger.info(`${serverConfig.systemReference} database access completed`);
+                    return callback(recordset);
+                })
+                .catch(function(error) {
+                    logger.error(`${serverConfig.systemReference} database access failure: ${error}`);
+                    alertSystemError('database query', error);
+                    return callback(null, error);
+                });
+        })
+        .catch(function(error) {
+            logger.error(`${serverConfig.systemReference} database connection failure: ${error}`);
+            alertSystemError('database connection', error);
+            return callback(null, error);
+        });
+}
+
+let statusReport = cron.schedule(serverConfig.reportingFrequency, function() {
     logger.info(`${serverConfig.systemReference} reporting mechanism triggered`);
     let issuedDatetime = moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
     let message = `${issuedDatetime} ${serverConfig.systemReference} server reporting in from ${serverConfig.serverHostname}`;
@@ -44,7 +69,7 @@ let statusReport = cron.schedule('0 0 */2 * * *', function() {
         uri: serverConfig.botAPIUrl + telegramBot.getToken('upgiITBot') + '/sendMessage',
         body: {
             chat_id: telegramUser.getUserID('蔡佳佑'),
-            text: message,
+            text: `${message}`,
             token: telegramBot.getToken('upgiITBot')
         },
         json: true
@@ -52,18 +77,10 @@ let statusReport = cron.schedule('0 0 */2 * * *', function() {
         logger.verbose(`${message}`);
         return logger.info(`${serverConfig.systemReference} reporting mechanism completed`);
     }).catch(function(error) {
+        alertSystemError('statusReport', error);
         return logger.error(`${serverConfig.systemReference} reporting mechanism failure ${error}`);
     });
 }, false);
-
-function writeSystemLog(issuedDatetime, functionRef, type, message) {
-    let currentDatetime = moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
-    database.executeQuery(`INSERT INTO upgiSystem.dbo.customAppLog (issuedDatetime,systemRef,functionRef,type,message) VALUES ('${issuedDatetime}','${serverConfig.systemReference}','${functionRef}','${type}','${message}');`, function(data, error) {
-        if (error) {
-            console.log(`${currentDatetime} error writing system log`);
-        }
-    });
-}
 
 function alertSystemError(functionRef, message) {
     let currentDatetime = moment(moment(), 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD HH:mm:ss');
@@ -86,23 +103,22 @@ function alertSystemError(functionRef, message) {
                 token: telegramBot.getToken('upgiITBot')
             }
         }).then(function(response) {
-            return console.log(`${currentDatetime} ${serverConfig.systemReference} ${functionRef} alert sent`);
+            return logger.info(`${serverConfig.systemReference} ${functionRef} alert sent`);
         }).catch(function(error) {
-            return console.log(`${currentDatetime} ${serverConfig.systemReference} ${functionRef} failure: ${error}`);
+            return logger.error(`${serverConfig.systemReference} ${functionRef} failure: ${error}`);
         });
     }).catch(function(error) {
-        return console.log(`${currentDatetime} ${serverConfig.systemReference} ${functionRef} failure: ${error}`);
+        return logger.error(`${serverConfig.systemReference} ${functionRef} failure: ${error}`);
     });
 }
 
 function fileRemoval(completeFilePath, callback) {
-    console.log(completeFilePath);
     fs.unlink(completeFilePath, function(error) {
         if (error !== null) {
-            console.log('file removal failure (may not be critical failure): ' + error);
+            logger.error('file removal failure (may not be critical failure): ' + error);
             return false;
         } else {
-            console.log(completeFilePath + ' removed successfully');
+            logger.info(completeFilePath + ' removed successfully');
             if (callback === undefined) {
                 return true;
             } else {
@@ -112,10 +128,32 @@ function fileRemoval(completeFilePath, callback) {
     });
 }
 
+function sendMessage(recipientIDList, messageList) {
+    recipientIDList.forEach(function(recipientID) {
+        messageList.forEach(function(message) {
+            httpRequest({
+                method: 'post',
+                uri: serverConfig.botAPIUrl + telegramBot.getToken('upgiITBot') + '/sendMessage',
+                form: {
+                    chat_id: recipientID,
+                    text: message,
+                    token: telegramBot.getToken('upgiITBot')
+                }
+            }).then(function(response) {
+                logger.info(`message sent to ${telegramUser.getUserName(parseInt(recipientID))}`);
+            }).catch(function(error) {
+                logger.error(`messaging failure for ${message} ${telegramUser.getUserName(parseInt(recipientID))}`);
+            });
+        });
+    });
+    return;
+}
+
 module.exports = {
     alertSystemError: alertSystemError,
+    sendMessage: sendMessage,
+    executeQuery: executeQuery,
     fileRemoval: fileRemoval,
     logger: logger,
-    statusReport: statusReport,
-    writeSystemLog: writeSystemLog
+    statusReport: statusReport
 };

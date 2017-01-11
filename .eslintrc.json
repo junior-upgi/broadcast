@@ -47,34 +47,8 @@
             "always"
         ],
         "guard-for-in": "off",
-        /*
-        "indent": [
-            "error",
-            4, {
-                "SwitchCase": 1,
-                "ArrayExpression": "first",
-                "CallExpression": {
-                    "arguments": "first"
-                },
-                "FunctionDeclaration": {
-                    "body": 1,
-                    "parameters": 1
-                },
-                "FunctionExpression": {
-                    "body": 1,
-                    "parameters": 1
-                },
-                "MemberExpression": 1,
-                "ObjectExpression": "first",
-                "VariableDeclarator": {
-                    "var": 2,
-                    "let": 2,
-                    "const": 4
-                }
-            }
-        ],
-        */
         "max-len": "off",
+        "newline-after-var": "off",
         "no-console": "off",
         "no-invalid-this": "off",
         "no-undef": "warn",

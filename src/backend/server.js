@@ -4,12 +4,11 @@ const cron = require('node-cron');
 const express = require('express');
 const httpRequest = require('request-promise');
 const moment = require('moment-timezone');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 const path = require('path');
 
 const serverConfig = require('./module/serverConfig.js');
 const utility = require('./module/utility.js');
-// const telegram = require('./model/telegram.js');
 const telegramBot = require('./model/telegramBot.js');
 const telegramChat = require('./model/telegramChat.js');
 const telegramUser = require('./model/telegramUser');
@@ -18,7 +17,7 @@ const app = express();
 app.set('views', path.join(__dirname, '/view'));
 app.set('view engine', 'ejs');
 app.use(cors()); // allow cross origin request
-// app.use(morgan('dev')); // log request and result to console
+app.use(morgan('dev')); // log request and result to console
 app.use(bodyParser.urlencoded({
     extended: true
 }));

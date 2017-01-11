@@ -5,6 +5,8 @@
             "filename": [".jshintrc", ".jsbeautify"]
         },
         "css": ["css", "scss"],
-        "html": ["htm", "html", "handlebars"]
-    }
+        "html": ["htm", "html", "handlebars", "ejs"]
+    },
+    "brace_style": "collapse,preserve-inline",
+    "end_with_newline": true
 }
