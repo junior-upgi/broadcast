@@ -65,7 +65,7 @@ const logDir = 'log';
 
 // misc
 const workingTimezone = 'Asia/Taipei';
-const reportingFrequency = '0 0 6,10,14,18,22 * * *';
+const reportingFrequency = '0 0 8,22 * * *';
 
 module.exports = {
     botAPIUrl: botAPIUrl,
