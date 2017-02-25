@@ -316,6 +316,24 @@ const list = [{
     email: 'ken@upgi.com.tw',
     joinedGroupList: [],
     upgEmployeeID: '99043017'
+}, {
+    id: 330988841,
+    username: 'jason741029',
+    first_name: '柏志',
+    last_name: '林',
+    status: ['user'],
+    email: 'furnace@upgi.com.tw',
+    joinedGroupList: [],
+    upgEmployeeID: '09100001'
+}, {
+    id: 378192530,
+    username: 'hcl4167',
+    first_name: '虹貞',
+    last_name: '陳連',
+    status: ['user'],
+    email: 'hcl4167@upgi.com.tw',
+    joinedGroupList: [],
+    upgEmployeeID: '95070003'
 }];
 
 function getUserID(userName) {
@@ -327,6 +345,7 @@ function getUserID(userName) {
     });
     return chat_id;
 }
+
 function getUserName(chat_id) {
     let userName;
     list.forEach(function(userObject) {
