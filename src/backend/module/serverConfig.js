@@ -92,7 +92,6 @@ module.exports = {
     serverHostname: serverHostname,
     serverPort: serverPort,
     serverUrl: `${serverHost}:${serverPort}`,
-    smtpTransportAccount: smtpTransportAccount,
     systemReference: systemReference,
     upgiSystemAccount: upgiSystemAccount,
     upgiSystemPassword: upgiSystemPassword,
