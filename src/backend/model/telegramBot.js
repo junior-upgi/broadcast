@@ -1,15 +1,15 @@
 const list = [{
-    id: 267738010,
+    id: 383151141,
     first_name: '逾期款機器人',
     username: 'overdueMonitorBot',
-    token: '267738010:AAGT17aLumIfVPNeFWht8eUEPuC2HfAouGk',
+    token: '383151141:AAHPQdaLrJgA3Jgi7PONEnPjKDCu3FG3IJ8',
     functionList: [],
     joinedGroupIDList: []
 }, {
-    id: 251686312,
+    id: 388573242,
     first_name: '氣泡數機器人',
     username: 'seedCountBot',
-    token: '251686312:AAG8_sczOJvJSwtese4kgzH95RLyX5ZJ114',
+    token: '388573242:AAElyz7iaW_pS2EyNAzP6wftaduBYVI8JSM',
     functionList: [],
     joinedGroupIDList: []
 }, {
@@ -34,10 +34,10 @@ const list = [{
     functionList: [],
     joinedGroupIDList: []
 }, {
-    id: 287236637,
-    first_name: 'UPGI IT 機器人',
-    username: 'upgiITBot',
-    token: '287236637:AAHSuMHmaZJ2Vm9gXf3NeSlInrgr-XXzoRo',
+    id: 313994181,
+    first_name: 'UPGI IT Bot',
+    username: 'upgiItBot',
+    token: '313994181:AAHTIPRVfLeJ_YW4LSSfGx-Y7G5p_8_sC64',
     functionList: [],
     joinedGroupIDList: []
 }];

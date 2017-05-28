@@ -16,7 +16,6 @@ function broadcastServerUrl() {
 const broadcastActiveStatus = true; // switch broadcast system on/off
 const broadcastFrequency = '* * * * * *'; // how often broadcast action is triggered
 const broadcastQuantity = 5; // how many message to broadcast each time
-const smtpTransportAccount = 'smtps://junior.upgi@gmail.com:cHApPPZV@smtp.gmail.com';
 
 // server configuration
 const serverHost = 'http://localhost';

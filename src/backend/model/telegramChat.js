@@ -1,22 +1,22 @@
 const list = [{
-    id: -150874076,
-    title: '業務群組',
+    id: -224820909,
+    title: '統義業務部',
     type: 'group'
 }, {
-    id: -155069392,
-    title: '玻璃製造群組',
-    type: 'group'
-}, {
-    id: -157638300,
-    title: '資訊群組',
+    id: -224420315,
+    title: '統義生產部',
     type: 'group'
 }, {
     id: -164742782,
     title: '產品開發群組',
     type: 'group'
 }, {
-    id: -162201704,
-    title: '測試群組',
+    id: -246916365,
+    title: '統義研發部',
+    type: 'group'
+}, {
+    id: -225498734,
+    title: '統義原料控管系統群組',
     type: 'group'
 }];
 
