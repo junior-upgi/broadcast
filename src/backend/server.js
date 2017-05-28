@@ -77,7 +77,7 @@ app.listen(serverConfig.serverPort, function(error) { // start backend server
 cron.schedule('* * 8 * * 1,2,3,4,5', function() {
     httpRequest({
         method: 'post',
-        uri: `https://api.telegram.org/bot313994181:AAHTIPRVfLeJ_YW4LSSfGx-Y7G5p_8_sC64/sendMessage`,
+        uri: 'https://api.telegram.org/bot313994181:AAHTIPRVfLeJ_YW4LSSfGx-Y7G5p_8_sC64/sendMessage',
         body: {
             chat_id: 373228139,
             text: 'broadcast 服務 0800 回報',
